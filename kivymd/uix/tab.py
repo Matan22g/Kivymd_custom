@@ -483,6 +483,7 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.utils import boundary
 
+from customKv.mdcarousel import MDCarousel
 from kivymd import fonts_path
 from kivymd.icon_definitions import md_icons
 from kivymd.theming import ThemableBehavior
@@ -491,7 +492,6 @@ from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
-from customKv.mdcarousel import MDCarousel
 
 Builder.load_string(
     """
@@ -852,7 +852,6 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
         if scroll_is_late and target.center_x > bound_left:
             x = lsx + dst
 
-
         elif not scroll_is_late and target.center_x < bound_right:
             x = lsx - dst
 
@@ -882,7 +881,7 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
                     else None
                 )
             except IndexError:
-                skip_slide = (None)
+                skip_slide = None
             next_slide = (
                 carousel.next_slide if forward else carousel.previous_slide
             )
