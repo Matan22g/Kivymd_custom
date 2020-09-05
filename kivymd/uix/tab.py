@@ -300,8 +300,7 @@ Dynamic tab management
             self.root.ids.tabs.add_widget(Tab(text=f"{self.index} tab"))
 
         def remove_tab(self):
-            if self.index > 1:
-                self.index -= 1
+            self.index -= 1
             self.root.ids.tabs.remove_widget(
                 self.root.ids.tabs.get_tab_list()[0]
             )
@@ -492,7 +491,7 @@ from kivymd.uix.behaviors import (
     SpecificBackgroundColorBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.carousel import MDCarousel
+from customKv.mdcarousel import MDCarousel
 
 Builder.load_string(
     """
@@ -853,12 +852,13 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
         if scroll_is_late and target.center_x > bound_left:
             x = lsx + dst
 
+
         elif not scroll_is_late and target.center_x < bound_right:
             x = lsx - dst
-            
+
         else:
             x = lsx + dst
-            
+
         x = boundary(x, 0.0, 1.0)
         self.scrollview.goto(x, None)
 
@@ -875,11 +875,14 @@ class MDTabsBar(ThemableBehavior, RectangularElevationBehavior, MDBoxLayout):
             break_step = 1.0 - traveled
             indicator_animation = self.parent.tab_indicator_anim
 
-            skip_slide = (
-                carousel.slides[carousel._skip_slide]
-                if carousel._skip_slide is not None
-                else None
-            )
+            try:
+                skip_slide = (
+                    carousel.slides[carousel._skip_slide]
+                    if carousel._skip_slide is not None
+                    else None
+                )
+            except IndexError:
+                skip_slide = (None)
             next_slide = (
                 carousel.next_slide if forward else carousel.previous_slide
             )
@@ -1068,7 +1071,6 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
 
     def switch_tab(self, name_tab):
         """Switching the tab by name."""
-
         for instance_tab in self.tab_bar.parent.carousel.slides:
             if instance_tab.text == name_tab:
                 self.tab_bar.parent.carousel.load_slide(instance_tab)
@@ -1111,13 +1113,10 @@ class MDTabs(ThemableBehavior, SpecificBackgroundColorBehavior, AnchorLayout):
             raise MDTabsException(
                 "MDTabs can remove only subclass of MDTabsLabel"
             )
-        # The last tab is not deleted.
-        if len(self.tab_bar.layout.children) == 1:
-            return
         self.tab_bar.layout.remove_widget(widget)
         for tab in self.carousel.slides:
             if tab.text == widget.text:
-                self.carousel.remove_widget(tab)
+                self.carousel.slides.remove(tab)
                 break
 
     def on_slide_progress(self, *args):
