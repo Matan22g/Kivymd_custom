@@ -139,6 +139,8 @@ from kivymd.uix.toolbar import MDToolbar
 
 Builder.load_string(
     """
+#:import utils kivy.utils
+    
 <MDBackdrop>
 
     canvas:
@@ -154,6 +156,7 @@ Builder.load_string(
         id: toolbar
         title: root.title
         elevation: 0
+        height: 0
         md_bg_color:
             root.theme_cls.primary_color if not root.background_color \
             else root.background_color
@@ -171,19 +174,19 @@ Builder.load_string(
         md_bg_color: 0, 0, 0, 0
         orientation: "vertical"
         size_hint_y: None
-        height: root.height - toolbar.height
+        height: root.height*0.7
         padding: root.padding
 
         canvas:
             Color:
-                rgba: root.theme_cls.bg_normal
+                rgba: utils.get_color_from_hex("#90AEFF")
             RoundedRectangle:
                 pos: self.pos
                 size: self.size
                 radius:
                     [
                     (root.radius, root.radius),
-                    (0, 0),
+                    (50, 50),
                     (0, 0),
                     (0, 0)
                     ]
@@ -191,10 +194,14 @@ Builder.load_string(
         OneLineListItem:
             id: header_button
             text: root.header_text
+            theme_text_color: 'Custom'
+            text_color: 1,1,1,1
             divider: None
             _no_ripple_effect: True
             on_press: root.open()
-
+            _txt_left_pad: 125
+            _txt_top_pad: 120
+            
         BoxLayout:
             id: front_layer
             padding: 0, 0, 0, "10dp"
@@ -322,7 +329,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         if open_up_to:
             y = open_up_to
         else:
-            y = dp(120) - self.height
+            y = dp(250) - self.height
         Animation(y=y, d=0.2, t="out_quad").start(self.ids._front_layer)
         self._front_layer_open = True
         self.dispatch("on_open")
