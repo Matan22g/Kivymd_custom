@@ -140,7 +140,8 @@ from kivymd.uix.toolbar import MDToolbar
 Builder.load_string(
     """
 #:import utils kivy.utils
-    
+#:import Window kivy.core.window
+
 <MDBackdrop>
 
     canvas:
@@ -174,7 +175,7 @@ Builder.load_string(
         md_bg_color: 0, 0, 0, 0
         orientation: "vertical"
         size_hint_y: None
-        height: root.height*0.7
+        height: Window.size[1]*0.7
         padding: root.padding
 
         canvas:
