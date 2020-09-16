@@ -122,6 +122,7 @@ __all__ = (
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -209,7 +210,7 @@ Builder.load_string(
 """
 )
 
-from kivy.core.window import Window
+
 
 class MDBackdrop(ThemableBehavior, FloatLayout):
     """
@@ -323,10 +324,10 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
             the height to which the front screen will be lowered;
             if equal to zero - falls to the bottom of the screen;
         """
-        to_reduce = (Window.size[1] *0.38) - Window.size[1]
-        print("Window.size[1]",Window.size[1])
-        print("Window.size[1] *0.38",Window.size[1] *0.38)
-        print("to_reduce",to_reduce)
+        to_reduce = (Window.size[1] * 0.38) - Window.size[1]
+        print("Window.size[1]", Window.size[1])
+        print("Window.size[1] *0.38", Window.size[1] * 0.38)
+        print("to_reduce", to_reduce)
 
         self.animtion_icon_menu()
         if self._front_layer_open:
