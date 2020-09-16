@@ -199,7 +199,7 @@ Builder.load_string(
             text_color: 1,1,1,1
             divider: None
             _no_ripple_effect: True
-            on_press: root.open()
+            on_press: root.open(0)
             _txt_left_pad: 125
             _txt_top_pad: 120
             
@@ -209,6 +209,7 @@ Builder.load_string(
 """
 )
 
+from kivy.core.window import Window
 
 class MDBackdrop(ThemableBehavior, FloatLayout):
     """
@@ -322,7 +323,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
             the height to which the front screen will be lowered;
             if equal to zero - falls to the bottom of the screen;
         """
-
+        to_reduce = Window.size[1]/2.6
         self.animtion_icon_menu()
         if self._front_layer_open:
             self.close()
@@ -330,7 +331,7 @@ class MDBackdrop(ThemableBehavior, FloatLayout):
         if open_up_to:
             y = open_up_to
         else:
-            y = dp(250) - self.height
+            y = dp(to_reduce) - self.height
         Animation(y=y, d=0.2, t="out_quad").start(self.ids._front_layer)
         self._front_layer_open = True
         self.dispatch("on_open")
