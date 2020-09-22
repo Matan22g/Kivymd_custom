@@ -344,7 +344,7 @@ class NavigationLayout(FloatLayout):
         manager = self._screen_manager
         if not drawer or not manager:
             return
-        if drawer.type == "standard" or manager.width < self.width:
+        if drawer.type == "standard":
             manager.size_hint_x = None
             if drawer.anchor == "left":
                 manager.x = drawer.width + drawer.x
@@ -352,6 +352,13 @@ class NavigationLayout(FloatLayout):
             else:
                 manager.x = 0
                 manager.width = drawer.x
+        elif drawer.type == "modal":
+            manager.size_hint_x = None
+            manager.x = 0
+            if drawer.anchor == "left":
+                manager.width = self.width - manager.x
+            else:
+                manager.width = self.width
 
     def add_scrim(self, widget):
         with widget.canvas.after:
@@ -689,9 +696,14 @@ class MDNavigationDrawer(MDCard):
                 self.status = "closing_with_swipe"
 
         if self.status in ("opening_with_swipe", "closing_with_swipe"):
-            self.open_progress = max(
-                min(self.open_progress + touch.dx / self.width, 1), 0
-            )
+            if self.anchor == "left":
+                self.open_progress = max(
+                    min(self.open_progress + touch.dx / self.width, 1), 0
+                )
+            else:
+                self.open_progress = max(
+                    min(self.open_progress - touch.dx / self.width, 1), 0
+                )
             return True
         return super().on_touch_move(touch)
 
