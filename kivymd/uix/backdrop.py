@@ -211,7 +211,6 @@ Builder.load_string(
 )
 
 
-
 class MDBackdrop(ThemableBehavior, FloatLayout):
     """
     :Events:
