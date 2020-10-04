@@ -297,69 +297,6 @@ Control background color
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-round-active-color.gif
     :align: center
 
-Clickable icon for MDTextFieldRound
------------------------------------
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
-
-    from kivymd.app import MDApp
-    from kivymd.uix.relativelayout import MDRelativeLayout
-
-    KV = '''
-    <ClickableTextFieldRound>:
-        size_hint_y: None
-        height: text_field.height
-
-        MDTextFieldRound:
-            id: text_field
-            hint_text: root.hint_text
-            text: root.text
-            password: True
-            color_active: app.theme_cls.primary_light
-            icon_left: "key-variant"
-            padding:
-                self._lbl_icon_left.texture_size[1] + dp(10) if self.icon_left else dp(15), \
-                (self.height / 2) - (self.line_height / 2), \
-                self._lbl_icon_right.texture_size[1] + dp(20), \
-                0
-
-        MDIconButton:
-            icon: "eye-off"
-            ripple_scale: .5
-            pos_hint: {"center_y": .5}
-            pos: text_field.width - self.width + dp(8), 0
-            on_release:
-                self.icon = "eye" if self.icon == "eye-off" else "eye-off"
-                text_field.password = False if text_field.password is True else True
-
-
-    MDScreen:
-
-        ClickableTextFieldRound:
-            size_hint_x: None
-            width: "300dp"
-            hint_text: "Password"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
-
-
-    class ClickableTextFieldRound(MDRelativeLayout):
-        text = StringProperty()
-        hint_text = StringProperty()
-        # Here specify the required parameters for MDTextFieldRound:
-        # [...]
-
-
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-
-    Test().run()
-
 With right icon
 ---------------
 
@@ -479,7 +416,7 @@ Builder.load_string(
         Rectangle:
             texture: self._right_msg_lbl.texture
             size: self._right_msg_lbl.texture_size
-            pos: self.x + self.width - self._right_msg_lbl.texture_size[0] - dp(16), self.y
+            pos: self.width-self._right_msg_lbl.texture_size[0] + dp(45), self.y
 
         Color:
             rgba:
@@ -510,12 +447,12 @@ Builder.load_string(
             width: dp(1) if root.mode == "rectangle" else dp(0.00001)
             points:
                 (
-                self.x + root._line_blank_space_right_point, self.top - self._hint_lbl.texture_size[1] // 2,
+                self.x, self.top - self._hint_lbl.texture_size[1] // 2,
                 self.right + dp(12), self.top - self._hint_lbl.texture_size[1] // 2,
                 self.right + dp(12), self.y,
                 self.x - dp(12), self.y,
                 self.x - dp(12), self.top - self._hint_lbl.texture_size[1] // 2,
-                self.x + root._line_blank_space_left_point, self.top - self._hint_lbl.texture_size[1] // 2
+                self.x , self.top - self._hint_lbl.texture_size[1] // 2
                 )
 
     # "fill" mode.
@@ -525,7 +462,7 @@ Builder.load_string(
         RoundedRectangle:
             pos: self.x, self.y
             size: self.width, self.height + dp(8)
-            radius: (10, 10, 0, 0, 0)
+            radius: (5, 5, 0, 0, 0)
 
     font_name: "Roboto" if not root.font_name else root.font_name
     foreground_color: app.theme_cls.text_color
